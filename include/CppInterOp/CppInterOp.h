@@ -392,6 +392,9 @@ CPPINTEROP_API std::string GetQualifiedName(TCppScope_t klass);
 /// gets the template arguments.
 CPPINTEROP_API std::string GetQualifiedCompleteName(TCppScope_t klass);
 
+CPPINTEROP_API std::string GetDoxygenComment(TCppScope_t scope,
+                                            bool strip_comment_markers = true);
+
 /// Gets the list of namespaces utilized in the supplied scope.
 CPPINTEROP_API std::vector<TCppScope_t> GetUsingNamespaces(TCppScope_t scope);
 

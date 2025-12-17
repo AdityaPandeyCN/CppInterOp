@@ -256,6 +256,9 @@ CINDEX_LINKAGE CXScope clang_getDestructor(CXScope S);
  */
 CINDEX_LINKAGE CXString clang_getFunctionSignature(CXScope func);
 
+CINDEX_LINKAGE CXString clang_getDoxygenComment(CXScope S,
+                                                bool strip_comment_markers);
+
 /**
  * Checks if a function is a templated function.
  */
@@ -375,3 +378,4 @@ LLVM_CLANG_C_EXTERN_C_END
 
 #endif // LLVM_CLANG_C_CXCPPINTEROP_H
        // NOLINTEND()
+

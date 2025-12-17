@@ -12,6 +12,7 @@ else()
 endif()
 
 add_cppinterop_unittest(CppInterOpTests
+  CommentReflectionTest.cpp
   EnumReflectionTest.cpp
   FunctionReflectionTest.cpp
   InterpreterTest.cpp
