@@ -28,7 +28,11 @@ if (EMSCRIPTEN)
   endif()
 else()
   set(config_cmd ${CMAKE_COMMAND})
-  set(build_cmd ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR}/unittests/googletest-prefix/src/googletest-build/ --config $<CONFIG>)
+  if(CMAKE_CONFIGURATION_TYPES)
+    set(build_cmd ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR}/unittests/googletest-prefix/src/googletest-build/ --config $<CONFIG>)
+  else()
+    set(build_cmd ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR}/unittests/googletest-prefix/src/googletest-build/)
+  endif()
 endif()
 
 ExternalProject_Add(

@@ -212,7 +212,7 @@ static std::string StripDoxygenCommentMarkers(llvm::StringRef Raw) {
 
   const llvm::StringRef First =
       Lines.empty() ? llvm::StringRef() : Lines.front().ltrim(" \t\r");
-  const bool IsBlock = First.startswith("/**") || First.startswith("/*!");
+  const bool IsBlock = First.starts_with("/**") || First.starts_with("/*!");
 
   std::string Out;
   llvm::raw_string_ostream OS(Out);
@@ -231,7 +231,7 @@ static std::string StripDoxygenCommentMarkers(llvm::StringRef Raw) {
       }
 
       llvm::StringRef R = L.rtrim(" \t\r");
-      if (R.endswith("*/")) {
+      if (R.ends_with("*/")) {
         L = R.drop_back(2).rtrim(" \t\r");
       }
     } else {
