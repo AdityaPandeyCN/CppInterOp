@@ -28,7 +28,13 @@ if (EMSCRIPTEN)
   endif()
 else()
   set(config_cmd ${CMAKE_COMMAND})
-  set(build_cmd ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR}/unittests/googletest-prefix/src/googletest-build/ --config $<CONFIG>)
+  if(CMAKE_CONFIGURATION_TYPES)
+    set(build_cmd ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR}/unittests/googletest-prefix/src/googletest-build/ --config $<CONFIG>)
+    set(gtest_build_type_arg -DCMAKE_BUILD_TYPE=$<CONFIG>)
+  else()
+    set(build_cmd ${CMAKE_COMMAND} --build ${CMAKE_BINARY_DIR}/unittests/googletest-prefix/src/googletest-build/)
+    set(gtest_build_type_arg -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE})
+  endif()
 endif()
 
 ExternalProject_Add(
@@ -45,7 +51,7 @@ ExternalProject_Add(
   CONFIGURE_COMMAND ${config_cmd} -G ${CMAKE_GENERATOR}
   		-S ${CMAKE_BINARY_DIR}/unittests/googletest-prefix/src/googletest/
 		-B ${CMAKE_BINARY_DIR}/unittests/googletest-prefix/src/googletest-build/
-                -DCMAKE_BUILD_TYPE=$<CONFIG>
+                ${gtest_build_type_arg}
                 -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
                 -DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}
                 -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
@@ -100,3 +106,4 @@ set_property(TARGET gtest PROPERTY IMPORTED_LOCATION ${_G_LIBRARY_PATH}/${CMAKE_
 set_property(TARGET gtest_main PROPERTY IMPORTED_LOCATION ${_G_LIBRARY_PATH}/${CMAKE_STATIC_LIBRARY_PREFIX}gtest_main${CMAKE_STATIC_LIBRARY_SUFFIX})
 set_property(TARGET gmock PROPERTY IMPORTED_LOCATION ${_G_LIBRARY_PATH}/${CMAKE_STATIC_LIBRARY_PREFIX}gmock${CMAKE_STATIC_LIBRARY_SUFFIX})
 set_property(TARGET gmock_main PROPERTY IMPORTED_LOCATION ${_G_LIBRARY_PATH}/${CMAKE_STATIC_LIBRARY_PREFIX}gmock_main${CMAKE_STATIC_LIBRARY_SUFFIX})
+
