@@ -683,19 +683,15 @@ std::string GetDoxygenComment(TCppScope_t scope, bool strip_comment_markers) {
   D = D->getCanonicalDecl();
 
   ASTContext& C = D->getASTContext();
-  const Preprocessor* PP = nullptr;
-  if (auto* CI = getInterp().getCI())
-    PP = &CI->getPreprocessor();
-
-  comments::FullComment* FC = C.getCommentForDecl(D, PP);
+  // Use getCommentForDecl for caching benefit (as Vassil suggested)
+  // This parses and caches the comment internally
+  comments::FullComment* FC = C.getCommentForDecl(D, /*PP=*/nullptr);
   if (!FC)
     return "";
 
+  // Get the RawComment for text extraction
   const RawComment* RC = C.getRawCommentForAnyRedecl(D);
   if (!RC)
-    return "";
-
-  if (!RC->isDocumentation())
     return "";
 
   const SourceManager& SM = C.getSourceManager();
